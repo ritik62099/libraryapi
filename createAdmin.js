@@ -10,7 +10,7 @@ await connectDB();
 
 const createAdmin = async () => {
   try {
-    const username = "ritik";         // 👈 yahan naya username
+    const username = "admin";         // 👈 yahan naya username
     const plainPassword = "123456"; // 👈 yahan naya password
 
     const existingAdmin = await Admin.findOne({ username });
@@ -30,6 +30,44 @@ const createAdmin = async () => {
 };
 
 createAdmin();
+
+
+// import mongoose from "mongoose";
+// import dotenv from "dotenv";
+// import Student from "./models/Student.js";
+// import Attendance from "./models/Attendance.js";
+// import Admin from "./models/Admin.js";
+
+// dotenv.config();
+
+// const connectDB = async () => {
+//   try {
+//     await mongoose.connect(process.env.MONGO_URI);
+//     console.log("MongoDB connected...");
+//   } catch (err) {
+//     console.error(err);
+//     process.exit(1);
+//   }
+// };
+
+// const cleanDB = async () => {
+//   try {
+//     await connectDB();
+
+//     // ⚠️ Warning: This will delete ALL collections
+//     await Admin.deleteMany({});
+//     await Student.deleteMany({});
+//     await Attendance.deleteMany({});
+
+//     console.log("All data cleared!");
+//     process.exit(0);
+//   } catch (err) {
+//     console.error(err);
+//     process.exit(1);
+//   }
+// };
+
+// cleanDB();
 
 
 // import mongoose from "mongoose";

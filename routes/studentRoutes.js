@@ -208,10 +208,18 @@ router.put("/pay/:id", authMiddleware, async (req, res) => {
  */
 router.get("/public", async (req, res) => {
   try {
-    const students = await Student.find(); // all students
+    const { admin } = req.query;
+
+    if (!admin) {
+      return res.status(400).json({ message: "Admin ID is required" });
+    }
+
+    // Find students only for this admin
+    const students = await Student.find({ admin });
     res.json(students);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Public students error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
