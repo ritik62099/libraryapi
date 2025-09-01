@@ -1,35 +1,35 @@
-// // createAdmin.js
-// import mongoose from "mongoose";
-// import dotenv from "dotenv";
-// import bcrypt from "bcryptjs";
-// import Admin from "./models/Admin.js";
-// import connectDB from "./config/db.js";
+// createAdmin.js
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import bcrypt from "bcryptjs";
+import Admin from "./models/Admin.js";
+import connectDB from "./config/db.js";
 
-// dotenv.config();
-// await connectDB();
+dotenv.config();
+await connectDB();
 
-// const createAdmin = async () => {
-//   try {
-//     const username = "anjali";         // 👈 yahan naya username
-//     const plainPassword = "123456"; // 👈 yahan naya password
+const createAdmin = async () => {
+  try {
+    const username = "ritik";         // 👈 yahan naya username
+    const plainPassword = "123456"; // 👈 yahan naya password
 
-//     const existingAdmin = await Admin.findOne({ username });
+    const existingAdmin = await Admin.findOne({ username });
 
-//     if (existingAdmin) {
-//       console.log(`⚠️ Admin already exists: ${username}`);
-//     } else {
-//       const hashed = await bcrypt.hash(plainPassword, 10);
-//       await Admin.create({ username, password: hashed });
-//       console.log(`✅ Admin created: username=${username}, password=${plainPassword}`);
-//     }
-//   } catch (error) {
-//     console.error("❌ Error creating admin:", error.message);
-//   } finally {
-//     mongoose.connection.close();
-//   }
-// };
+    if (existingAdmin) {
+      console.log(`⚠️ Admin already exists: ${username}`);
+    } else {
+      const hashed = await bcrypt.hash(plainPassword, 10);
+      await Admin.create({ username, password: hashed });
+      console.log(`✅ Admin created: username=${username}, password=${plainPassword}`);
+    }
+  } catch (error) {
+    console.error("❌ Error creating admin:", error.message);
+  } finally {
+    mongoose.connection.close();
+  }
+};
 
-// createAdmin();
+createAdmin();
 
 
 // import mongoose from "mongoose";
