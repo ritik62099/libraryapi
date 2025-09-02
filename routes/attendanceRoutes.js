@@ -115,6 +115,8 @@
 
 
 
+
+
 import express from "express";
 import Attendance from "../models/Attendance.js";
 import Student from "../models/Student.js";
@@ -153,15 +155,25 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-/**
- * PUBLIC attendance route – roll + name (no login)
- */
+
+// Public attendance route – mark attendance without login
 router.post("/public", async (req, res) => {
   try {
-    const { roll, name } = req.body;
-    const student = await Student.findOne({ roll, name });
+    const { roll, name, admin } = req.body;
+
+    if (!roll || !name || !admin)
+      return res.status(400).json({ message: "Roll, Name, and Admin ID are required" });
+
+    // 🔹 Find the student by roll + name + admin
+    const student = await Student.findOne({
+      roll: roll.trim(),
+      name: name.trim(),
+      admin,
+    });
+
     if (!student) return res.status(404).json({ message: "Student not found" });
 
+    // 🔹 Check if already marked today
     const now = new Date();
     const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
@@ -169,16 +181,23 @@ router.post("/public", async (req, res) => {
     const existing = await Attendance.findOne({
       student: student._id,
       date: { $gte: startOfDay, $lt: endOfDay },
+      admin: student.admin, // ensures attendance is linked to correct admin
     });
 
     if (existing) return res.json({ message: "Already marked today" });
 
-    const attendance = new Attendance({ student: student._id, admin: student.admin });
+    // 🔹 Create attendance
+    const attendance = new Attendance({
+      student: student._id,
+      admin: student.admin,
+    });
+
     await attendance.save();
 
     res.json({ message: "Attendance marked successfully", attendance });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    console.error("Public attendance error:", err);
+    res.status(500).json({ message: err.message });
   }
 });
 

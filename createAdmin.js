@@ -10,7 +10,7 @@ await connectDB();
 
 const createAdmin = async () => {
   try {
-    const username = "admin";         // 👈 yahan naya username
+    const username = "ritik";         // 👈 yahan naya username
     const plainPassword = "123456"; // 👈 yahan naya password
 
     const existingAdmin = await Admin.findOne({ username });
